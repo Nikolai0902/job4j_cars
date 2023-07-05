@@ -4,6 +4,10 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Модель описывает изменение цены в Post.
+ * Связан с пост как @OneToMany.
+ */
 @Data
 @Entity
 @Table(name = "price_history")

@@ -7,6 +7,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Модель обьявления.
+ *
+ * OneToMany - связь Post и История цены.
+ * @JoinColumn -  колонка для вторичного ключа в таблице PRICE_HISTORY.
+ * Если это не сделать, то hibernate будет создавать отдельную таблицу, а не использовать нашу схему.
+ *
+ */
 @Data
 @Entity
 @Table(name = "auto_post")
