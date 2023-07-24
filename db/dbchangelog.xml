@@ -6,7 +6,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     <include file="scripts/001_ddl_create_schema_auto_user.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/000_ddl_create_schema_car_engine_owners_history_owners_history.sql" relativeToChangelogFile="true"/>
     <include file="scripts/002_ddl_create_schema_auto_post.sql" relativeToChangelogFile="true"/>
     <include file="scripts/003_update.sql" relativeToChangelogFile="true"/>
     <include file="scripts/004_update.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/005_update.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
