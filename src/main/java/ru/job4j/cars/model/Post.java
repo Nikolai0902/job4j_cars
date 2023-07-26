@@ -5,7 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Модель обьявления.
@@ -25,9 +27,16 @@ public class Post {
     private int id;
     private String description;
     private LocalDate created;
-    private int price;
+
+    @OneToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
-    private List<PriceHistory> messengers = new ArrayList<>();
+    private List<PriceHistory> priceHistory = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "file_post_id")
+    private Set<File> photo = new HashSet<>();
 }
