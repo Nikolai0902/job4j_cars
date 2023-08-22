@@ -5,10 +5,16 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <include file="scripts/001_ddl_create_schema_auto_user.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/000_ddl_create_schema_car_engine_owners_history_owners_history.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/002_ddl_create_schema_auto_post.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/003_update.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/004_update.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/005_update.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/000_ddl_create_schema_auto_user.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/001_ddl_create_schema_auto_post.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/002_dml_insert_into_auto_user.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/003_ddl_create_participates_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/004_ddl_create_table_engine.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/005_ddl_create_table_owners.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/006_ddl_create_table_car.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/007_ddl_create_table_history_owners.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/008_ddl_create_table_histories.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/009_ddl_create_scheme_file.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/010_ddl_create_price_history.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/011_dml_alter_add_column_auto_post.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

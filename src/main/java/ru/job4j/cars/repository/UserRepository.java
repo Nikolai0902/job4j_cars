@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import ru.job4j.cars.model.Engine;
 import ru.job4j.cars.model.User;
 
 import java.util.ArrayList;

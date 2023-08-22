@@ -1,19 +1,21 @@
 package ru.job4j.cars.model;
 
 import lombok.Data;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 /**
  * Модель владельца.
  */
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "owners")
 public class Owner {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;

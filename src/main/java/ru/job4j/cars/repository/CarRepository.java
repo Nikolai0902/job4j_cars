@@ -23,12 +23,6 @@ public class CarRepository {
     private static final Logger LOG = LoggerFactory.getLogger(CarRepository.class.getName());
     private final CrudRepository crudRepository;
 
-    /**
-     * Добавить авто.
-     *
-     * @param car задачу.
-     * @return car.
-     */
     public Car create(Car car) {
         try {
             crudRepository.run(session -> session.persist(car));
@@ -38,11 +32,17 @@ public class CarRepository {
         return car;
     }
 
-    /**
-     * Удалить авто.
-     *
-     * @param id ID
-     */
+    public boolean update(Car car) {
+        boolean result = false;
+        try {
+            crudRepository.run(session -> session.merge(car));
+            result = true;
+        } catch (Exception e) {
+            LOG.error("update сar", e);
+        }
+        return result;
+    }
+
     public boolean delete(int id) {
         boolean result = false;
         try {
@@ -54,25 +54,14 @@ public class CarRepository {
         return result;
     }
 
-    /**
-     * Найти авто по ID
-     *
-     * @param id ID
-     * @return задача.
-     */
     public Optional<Car> findById(int id) {
-        return crudRepository.optional("FROM Car f JOIN FETCH f.engine "
+        return crudRepository.optional("FROM Car f "
                 + "JOIN FETCH f.owners "
                 + "WHERE f.id = :id", Car.class, Map.of("id", id));
     }
 
-    /**
-     * Список авто.
-     *
-     * @return список задач.
-     */
     public List<Car> findAll() {
-        return crudRepository.query("FROM Car f JOIN FETCH f.engine "
+        return crudRepository.query("FROM Car as f JOIN FETCH f.engine "
                 + "JOIN FETCH f.owners "
                 + "order by f.id ASC", Car.class);
     }
