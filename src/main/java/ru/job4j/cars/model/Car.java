@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,10 +12,11 @@ import java.util.Set;
 /**
  * Модель автомобиля.
  */
-@Entity
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder(builderMethodName = "of")
 @Table(name = "car")
 public class Car {
 
@@ -23,6 +25,15 @@ public class Car {
     private int id;
 
     private String name;
+    private String model;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "body_id")
+    private Body body;
 
     @ManyToOne
     @JoinColumn(name = "engine_id")
@@ -30,7 +41,7 @@ public class Car {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "history_owner",
+            name = "history_owners",
             joinColumns = {@JoinColumn(name = "car_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "owner_id", nullable = false, updatable = false)}
     )

@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 /**
  *  Модель пользвателя.
- *
  */
 @Data
 @Entity

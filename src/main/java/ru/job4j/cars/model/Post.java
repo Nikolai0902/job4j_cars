@@ -29,15 +29,18 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder(builderMethodName = "of")
 @Table(name = "auto_post")
-@Builder
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
-    private LocalDate created;
+    private LocalDate created = LocalDate.now();
+    private boolean sold = false;
+    private int price;
+    private int mileage;
 
     @ManyToOne
     @JoinColumn(name = "auto_user_id")
@@ -48,18 +51,25 @@ public class Post {
     private Car car;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id")
-    private Set<PriceHistory> priceHistory = new HashSet<>();
+    @JoinColumn(name = "auto_post_id")
+    private List<PriceHistory> priceHistory = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
             name = "participates",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "post_id") }
+            joinColumns = { @JoinColumn(name = "auto_user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "auto_post_id") }
     )
-    private Set<User> participates = new HashSet<>();
+    private List<User> participates = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "file_post_id")
-    private Set<File> photo = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "auto_post_id")
+    private List<File> files = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Post{" + "id=" + id + ", description='" + description
+                + '\'' + ", created=" + created + ", sold=" + sold + ", user="
+                + user + ", files=" + files + '}';
+    }
 }

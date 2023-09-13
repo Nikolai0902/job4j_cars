@@ -1,5 +1,7 @@
 package ru.job4j.cars.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder(builderMethodName = "of")
 @Table(name = "price_history")
 public class PriceHistory {
 
