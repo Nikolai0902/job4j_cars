@@ -1,5 +1,5 @@
 CREATE TABLE if not exists participates (
    id serial PRIMARY KEY,
-   user_id int not null REFERENCES auto_user(id),
-   post_id int not null REFERENCES auto_post(id)
+   auto_post_id int not null references auto_post(id),
+   auto_user_id int not null references auto_user(id)
 );
