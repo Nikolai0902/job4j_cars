@@ -23,13 +23,13 @@ public class CarRepository {
     private static final Logger LOG = LoggerFactory.getLogger(CarRepository.class.getName());
     private final CrudRepository crudRepository;
 
-    public Car create(Car car) {
+    public Optional<Car> create(Car car) {
         try {
-            crudRepository.run(session -> session.persist(car));
+            crudRepository.run(session -> session.save(car));
         } catch (Exception e) {
             LOG.error("create car", e);
         }
-        return car;
+        return Optional.of(car);
     }
 
     public boolean update(Car car) {
