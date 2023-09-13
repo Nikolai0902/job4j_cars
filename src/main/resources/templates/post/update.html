@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <title>Web приложение - продажа машин!</title>
+</head>
+
+<body>
+<div class="container-fluid p-0">
+
+    <!--Навигация-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/posts/allPost}">Web приложение - продажа машин!</a>
+            <div class="collapse navbar-collapse">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-item nav-link active" th:href="@{/posts/allPost}">Все обьявления</a>
+                    <a class="nav-item nav-link active" th:href="@{/posts/allPostNowDay}">За последний день</a>
+                    <a class="nav-item nav-link active" th:href="@{/posts/postAndPhoto}">Только с фото</a>
+
+                    <div class="d-flex" th:if="${user.login == 'Гость'}">
+                        <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
+                        <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
+                    </div>
+                    <div class="d-flex" th:if="${user.login != 'Гость'}">
+                        <a class="nav-link text-secondary me-3" href="#" th:text="${user.login}"></a>
+                        <a class="nav-link text-secondary" th:href="@{/users/logout}">Выйти</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!--Форма изменения обьявления-->
+    <div class="card" style="width: 100%">
+        <div class="card-header">
+            <b>Редактирование объявления:</b>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/posts/update}" method="POST" enctype="multipart/form-data" th:object="${post}">
+                <input type="hidden" name="id" th:field="*{id}">
+                <label for="photo">Добавьте фото</label>
+                <input type="file" class="form-control" name="photo" id="photo">
+
+                <button type="submit" class="btn btn-success">Сохранить</button>
+                <a class="btn btn-danger" th:href="@{/posts/allPost}" role="button">Отменить</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
