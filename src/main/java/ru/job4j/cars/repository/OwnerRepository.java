@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Engine;
 import ru.job4j.cars.model.File;
 import ru.job4j.cars.model.Owner;
+import ru.job4j.cars.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -25,13 +26,13 @@ public class OwnerRepository {
     private static final Logger LOG = LoggerFactory.getLogger(OwnerRepository.class.getName());
     private final CrudRepository crudRepository;
 
-    public Owner create(Owner owner) {
+    public Optional<Owner> create(Owner owner) {
         try {
-            crudRepository.run(session -> session.persist(owner));
+            crudRepository.run(session -> session.save(owner));
         } catch (Exception e) {
             LOG.error("create Owner", e);
         }
-        return owner;
+        return Optional.of(owner);
     }
 
     public boolean delete(int id) {
@@ -59,6 +60,11 @@ public class OwnerRepository {
     public Optional<Owner> findById(int id) {
         return crudRepository.optional("from Owner as i where i.id = :fId",
                 Owner.class, Map.of("fId", id));
+    }
+
+    public Optional<Owner> findByUser(User user) {
+        return crudRepository.optional("from Owner as i JOIN FETCH i.user as o where o = :FUser",
+                Owner.class, Map.of("FUser", user));
     }
 
     public List<Owner> findAll() {

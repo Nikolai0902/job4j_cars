@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Engine;
 import ru.job4j.cars.model.User;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
  * Реализация методов работы с обьектом User,
  * через язык Hibernate Query Language (далее - HQL).
  */
+@Repository
 @AllArgsConstructor
 public class UserRepository {
 
@@ -25,18 +27,20 @@ public class UserRepository {
      * @param user пользователь.
      * @return пользователь с id.
      */
-    public User create(User user) {
+    public Optional<User> create(User user) {
         Session session = sf.openSession();
+        Optional<User> rsl = Optional.empty();
         try {
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
+            rsl = Optional.of(user);
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
-        return user;
+        return rsl;
     }
 
     /**

@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import ru.job4j.cars.configuration.HibernateConfiguration;
 import ru.job4j.cars.model.Engine;
 
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 

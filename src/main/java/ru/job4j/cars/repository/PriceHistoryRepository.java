@@ -23,13 +23,13 @@ public class PriceHistoryRepository {
     private static final Logger LOG = LoggerFactory.getLogger(PriceHistoryRepository.class.getName());
     private final CrudRepository crudRepository;
 
-    public PriceHistory create(PriceHistory priceHistory) {
+    public Optional<PriceHistory> create(PriceHistory priceHistory) {
         try {
-            crudRepository.run(session -> session.persist(priceHistory));
+            crudRepository.run(session -> session.save(priceHistory));
         } catch (Exception e) {
             LOG.error("create priceHistory", e);
         }
-        return priceHistory;
+        return Optional.of(priceHistory);
     }
 
     public boolean delete(int id) {

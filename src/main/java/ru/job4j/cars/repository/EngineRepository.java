@@ -27,7 +27,7 @@ public class EngineRepository {
 
     public Engine create(Engine engine) {
         try {
-            crudRepository.run(session -> session.persist(engine));
+            crudRepository.run(session -> session.save(engine));
         } catch (Exception e) {
             LOG.error("create engine", e);
         }

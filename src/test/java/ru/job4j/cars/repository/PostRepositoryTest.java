@@ -9,16 +9,9 @@ import ru.job4j.cars.configuration.HibernateConfiguration;
 import ru.job4j.cars.model.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-
-import static java.util.Optional.of;
-import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static java.time.LocalDateTime.now;
-import static java.util.Optional.empty;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class PostRepositoryTest {
 
@@ -26,6 +19,8 @@ class PostRepositoryTest {
     private final CrudRepository crudRepository = new CrudRepository(sf);
     private final PostRepository postRepository = new PostRepository(crudRepository);
     private final CarRepository carRepository = new CarRepository(crudRepository);
+    private final OwnerRepository ownerRepository = new OwnerRepository(crudRepository);
+    private final PriceHistoryRepository historyRepository = new PriceHistoryRepository(crudRepository);
     private final FileRepository fileRepository = new FileRepository(crudRepository);
 
     @BeforeAll
@@ -70,12 +65,39 @@ class PostRepositoryTest {
 
     @Test
     public void findAllPost() {
+        Owner owner = new Owner();
+        owner.setName("1");
+        ownerRepository.create(owner);
+        Owner owner2 = new Owner();
+        owner2.setName("2");
+        ownerRepository.create(owner2);
+
+        Car car1 = new Car();
+        car1.setName("car1");
+        car1.setOwners(Set.of(owner));
+        carRepository.create(car1);
+        Car car2 = new Car();
+        car2.setName("car2");
+        car2.setOwners(Set.of(owner2));
+        carRepository.create(car2);
+
+        PriceHistory priceHistory1 =  new PriceHistory();
+        historyRepository.create(priceHistory1);
+        PriceHistory priceHistory2 =  new PriceHistory();
+        historyRepository.create(priceHistory2);
+
         Post post1 = new Post();
         post1.setDescription("description post1");
         post1.setCreated(LocalDate.now());
+        post1.setCar(car1);
+        post1.setPriceHistory(List.of(priceHistory1));
+
         Post post2 = new Post();
         post2.setDescription("description post2");
         post2.setCreated(LocalDate.now());
+        post2.setCar(car2);
+        post2.setPriceHistory(List.of(priceHistory2));
+
         postRepository.create(post1);
         postRepository.create(post2);
         assertThat(postRepository.findAll().size(),
@@ -85,15 +107,17 @@ class PostRepositoryTest {
     @Test
     public void findAllNowDayPost() {
         Post post1 = new Post();
-        post1.setDescription("description post1");
-        post1.setCreated(LocalDate.now());
         Post post2 = new Post();
-        post2.setDescription("description post2");
-        post2.setCreated(LocalDate.now().minusDays(2));
+        File file1 = new File();
+        File file2 = new File();
+        fileRepository.create(file1);
+        fileRepository.create(file2);
+        post1.setFiles(List.of(file1));
+        post2.setFiles(List.of(file2));
         postRepository.create(post1);
         postRepository.create(post2);
         assertThat(postRepository.findAllNowDay().size(),
-                is(1));
+                is(2));
     }
 
     @Test
@@ -103,7 +127,7 @@ class PostRepositoryTest {
         post1.setCreated(LocalDate.now());
         File photo = new File(0, "photo", "/");
         fileRepository.create(photo);
-        post1.setPhoto(Set.of(photo));
+        post1.setFiles(List.of(photo));
         Post post2 = new Post();
         post2.setDescription("description post2");
         post2.setCreated(LocalDate.now());

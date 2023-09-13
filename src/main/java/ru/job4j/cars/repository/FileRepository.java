@@ -27,7 +27,7 @@ public class FileRepository {
 
     public File create(File file) {
         try {
-            crudRepository.run(session -> session.persist(file));
+            crudRepository.run(session -> session.save(file));
         } catch (Exception e) {
             LOG.error("create car", e);
         }
@@ -37,7 +37,7 @@ public class FileRepository {
     public boolean update(File file) {
         boolean result = false;
         try {
-            crudRepository.run(session -> session.merge(file));
+            crudRepository.run(session -> session.update(file));
             result = true;
         } catch (Exception e) {
             LOG.error("update file", e);
@@ -57,11 +57,11 @@ public class FileRepository {
     }
 
     public Optional<File> findById(int id) {
-        return crudRepository.optional("from File as i where i.id = :fId",
+        return crudRepository.optional("FROM File WHERE id = :fId",
                 File.class, Map.of("fId", id));
     }
 
     public List<File> findAll() {
-        return crudRepository.query("from File ORDER BY id", File.class);
+        return crudRepository.query("FROM File ORDER BY id", File.class);
     }
 }

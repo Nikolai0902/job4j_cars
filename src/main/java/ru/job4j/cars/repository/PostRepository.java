@@ -25,13 +25,13 @@ public class PostRepository {
     private static final Logger LOG = LoggerFactory.getLogger(PostRepository.class.getName());
     private final CrudRepository crudRepository;
 
-    public Post create(Post post) {
+    public Optional<Post> create(Post post) {
         try {
-            crudRepository.run(session -> session.persist(post));
+            crudRepository.run(session -> session.save(post));
         } catch (Exception e) {
             LOG.error("create post", e);
         }
-        return post;
+        return Optional.of(post);
     }
 
     public boolean delete(int id) {
@@ -48,7 +48,7 @@ public class PostRepository {
     public boolean update(Post post) {
         boolean result = false;
         try {
-            crudRepository.run(session -> session.merge(post));
+            crudRepository.run(session -> session.update(post));
             result = true;
         } catch (Exception e) {
             LOG.error("update post", e);
@@ -56,32 +56,46 @@ public class PostRepository {
         return result;
     }
 
+    public boolean sold(int id) {
+        boolean result = false;
+        try {
+            crudRepository.run("UPDATE Post SET sold = :fSold where id = :pId", Map.of("fSold", true, "pId", id));
+            result = true;
+        } catch (Exception e) {
+            LOG.error("update sold", e);
+        }
+        return result;
+    }
+
     public Optional<Post> findById(int id) {
         return crudRepository.optional(
-                "FROM Post WHERE id = :id",
+                "SELECT DISTINCT p FROM Post as p LEFT JOIN FETCH p.car  LEFT JOIN FETCH p.files WHERE p.id = :fId",
                 Post.class,
-                Map.of("id", id)
+                Map.of("fId", id)
         );
     }
 
     public List<Post> findAll() {
-        return crudRepository.query("FROM Post", Post.class);
+        return crudRepository.query("SELECT DISTINCT p FROM Post as p LEFT JOIN FETCH p.car LEFT JOIN FETCH p.files ORDER BY p.id", Post.class);
     }
 
     /**
      * Показать объявления за последний день.
      */
     public List<Post> findAllNowDay() {
-        return crudRepository.query("FROM Post as f "
-                + "where f.created >= :fDate", Post.class, Map.of("fDate", LocalDate.now().minusDays(1)));
+        var dateNow = LocalDate.now();
+        var date = LocalDate.now().minusDays(1);
+        return crudRepository.query("SELECT DISTINCT p FROM Post AS p "
+                + " JOIN FETCH p.files WHERE p.created BETWEEN :fDate AND :fDateNow",
+                Post.class, Map.of("fDate", date, "fDateNow", dateNow));
     }
 
     /**
      * Показать объявления с фото.
      */
     public List<Post> findAllAndPhoto() {
-        return crudRepository.query("FROM Post as p "
-                + "where p.photo.size IS NOT NULL", Post.class);
+        return crudRepository.query("SELECT DISTINCT p FROM Post as p "
+                + "JOIN FETCH p.files f where f.size is not null", Post.class);
     }
 
     /**
