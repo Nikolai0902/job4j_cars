@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link active" th:href="@{/posts/allPost}">Все обьявления</a>
-                    <a class="nav-item nav-link active" th:href="@{/posts/allPostNowDay}">За последний день</a>
+                    <a class="nav-item nav-link active" th:href="@{/posts/nowDay}">За последний день</a>
                     <a class="nav-item nav-link active" th:href="@{/posts/postAndPhoto}">Только с фото</a>
 
                     <div class="d-flex" th:if="${user.login == 'Гость'}">
@@ -83,7 +83,7 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label for="mileage" class="form-label"><b>Цена автомобиля в рублях</b></label>
+                <label for="mileage" class="form-label"><b>Пробег</b></label>
                 <input type="number" class="form-control" id="mileage" name="mileage" placeholder="Укажите пробег">
             </div>
             <div class="mb-3">
