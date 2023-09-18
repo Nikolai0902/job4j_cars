@@ -1,6 +1,7 @@
 package ru.job4j.cars.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -20,63 +21,15 @@ import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("/post")
+@Slf4j
 public class PostController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PostController.class.getName());
-
     private final PostService postService;
-
-    private final FileService fileService;
     private final CategoryService categoryService;
     private final BodyService bodyService;
     private final EngineService engineService;
 
-    /**
-     * Возвращает страницу со списком всех обьявлений.
-     *
-     * @param model
-     * @return возвращает предствление - Основная страница. таблица со всеми объявлениям машин на продажу.
-     */
-    @GetMapping({"/allPost"})
-    public String getAllPosts(Model model) {
-        model.addAttribute("posts", postService.findAll());
-        return "post/allPost";
-    }
-
-    /**
-     * Возвращает страницу со списком всех обьявлений за последний день.
-     *
-     * @param model
-     * @return возвращает предствление - таблица со всеми объявлениям машин на продажу.
-     */
-    @GetMapping({"/nowDay"})
-    public String getAllPostsNowDay(Model model) {
-        var list = postService.findAllNowDay();
-        if (list.isEmpty()) {
-            model.addAttribute("message", "Объявлений за сегодня не найдено");
-            return "errors/404";
-        }
-        model.addAttribute("posts", list);
-        return "post/allPost";
-    }
-
-    /**
-     * Возвращает страницу со списком всех обьявлений c фото.
-     *
-     * @param model
-     * @return возвращает предствление - таблица со всеми объявлениям машин на продажу.
-     */
-    @GetMapping({"/postAndPhoto"})
-    public String findAllAndPhoto(Model model) {
-        var list = postService.findAllAndPhoto();
-        if (list.isEmpty()) {
-            model.addAttribute("message", "Объявлений с фото не найдено");
-            return "errors/404";
-        }
-        model.addAttribute("posts", list);
-        return "post/allPost";
-    }
 
     /**
      * Возвращает страницу добавления нового обьявления.
@@ -93,7 +46,7 @@ public class PostController {
     }
 
     /**
-     * Оборабатывается добавления нового обьявления.
+     * Оборабатывается добавление нового обьявления.
      * При условии что все поля заполнены и категория авто соответствует кузову автомобиля.
      *
      * @param postDto собранная сущность параметров обьявления.
@@ -117,7 +70,7 @@ public class PostController {
         var postOptional = postService.create(postDto, files, user);
         if (postOptional.isEmpty()) {
             model.addAttribute("message", "Ошибка при добавлении объявления");
-            LOG.error("error add post");
+            log.error("error add post");
             return "errors/409";
         }
         model.addAttribute("message", "Объявление добавлено");
@@ -137,7 +90,7 @@ public class PostController {
         var postOptional = postService.findById(id);
         if (postOptional.isEmpty()) {
             model.addAttribute("message", "Объявление не найдено");
-            LOG.error(String.format("post id %d not found", id));
+            log.error(String.format("post id %d not found", id));
             return "errors/404";
         }
         model.addAttribute("post", postOptional.get());
@@ -192,7 +145,7 @@ public class PostController {
         var postOptional = postService.findById(id);
         if (postOptional.isEmpty()) {
             model.addAttribute("message", "Объявление не найдено");
-            LOG.error(String.format("post id %d not found", id));
+            log.error(String.format("post id %d not found", id));
             return "errors/404";
         }
         model.addAttribute("post", postOptional.get());
@@ -215,7 +168,7 @@ public class PostController {
         var postUpdate = postService.findById(post.getId());
         if (postUpdate.isEmpty()) {
             model.addAttribute("message", "Объявление не найдено");
-            LOG.error(String.format("post id %d not found", post.getId()));
+            log.error(String.format("post id %d not found", post.getId()));
             return "errors/404";
         }
         if (!postService.update(postUpdate.get(), photo)) {

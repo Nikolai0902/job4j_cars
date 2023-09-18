@@ -45,7 +45,7 @@ public class AuthorizationFilter extends HttpFilter {
         }
         var userLoggedIn = request.getSession().getAttribute("user") != null;
         if (!userLoggedIn) {
-            var loginPageUrl = request.getContextPath() + "/users/login";
+            var loginPageUrl = request.getContextPath() + "/security/login";
             response.sendRedirect(loginPageUrl);
             return;
         }

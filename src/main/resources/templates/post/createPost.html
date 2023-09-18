@@ -30,11 +30,11 @@
 
                     <div class="d-flex" th:if="${user.login == 'Гость'}">
                         <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
-                        <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
+                        <a class="nav-link text-secondary" th:href="@{/security/login}">Войти</a>
                     </div>
                     <div class="d-flex" th:if="${user.login != 'Гость'}">
                         <a class="nav-link text-secondary me-3" href="#" th:text="${user.login}"></a>
-                        <a class="nav-link text-secondary" th:href="@{/users/logout}">Выйти</a>
+                        <a class="nav-link text-secondary" th:href="@{/security/logout}">Выйти</a>
                     </div>
 
                 </div>
@@ -44,7 +44,7 @@
 
     <!--Форма создания обьявления-->
     <div class="container">
-        <form class="mt-3" th:action="@{/posts/createPost}" method="post" enctype="multipart/form-data">
+        <form class="mt-3" th:action="@{/post/createPost}" method="post" enctype="multipart/form-data">
             <div class="mb-3" th:if="${error}">
                 <p class="text-danger" th:text="${error}"></p>
             </div>

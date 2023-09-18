@@ -35,11 +35,11 @@
 
                     <div class="d-flex" th:if="${user.login == 'Гость'}">
                         <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
-                        <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
+                        <a class="nav-link text-secondary" th:href="@{/security/login}">Войти</a>
                     </div>
                     <div class="d-flex" th:if="${user.login != 'Гость'}">
                         <a class="nav-link text-secondary me-3" href="#" th:text="${user.login}"></a>
-                        <a class="nav-link text-secondary" th:href="@{/users/logout}">Выйти</a>
+                        <a class="nav-link text-secondary" th:href="@{/security/logout}">Выйти</a>
                     </div>
 
                 </div>
@@ -53,7 +53,7 @@
             <b>Редактирование объявления:</b>
         </div>
         <div class="card-body">
-            <form th:action="@{/posts/update}" method="POST" enctype="multipart/form-data" th:object="${post}">
+            <form th:action="@{/post/update}" method="POST" enctype="multipart/form-data" th:object="${post}">
                 <input type="hidden" name="id" th:field="*{id}">
                 <label for="photo">Добавьте фото</label>
                 <input type="file" class="form-control" name="photo" id="photo">

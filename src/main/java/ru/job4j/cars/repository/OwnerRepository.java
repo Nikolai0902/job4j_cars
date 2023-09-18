@@ -1,6 +1,7 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -21,16 +22,16 @@ import java.util.Optional;
  */
 @Repository
 @AllArgsConstructor
+@Slf4j
 public class OwnerRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OwnerRepository.class.getName());
     private final CrudRepository crudRepository;
 
     public Optional<Owner> create(Owner owner) {
         try {
             crudRepository.run(session -> session.save(owner));
         } catch (Exception e) {
-            LOG.error("create Owner", e);
+            log.error("create Owner", e);
         }
         return Optional.of(owner);
     }
@@ -41,7 +42,7 @@ public class OwnerRepository {
             crudRepository.run("DELETE Owner WHERE id = :id", Map.of("id", id));
             result = true;
         } catch (Exception e) {
-            LOG.error("done Owner", e);
+            log.error("done Owner", e);
         }
         return result;
     }
@@ -52,7 +53,7 @@ public class OwnerRepository {
             crudRepository.run(session -> session.merge(owner));
             result = true;
         } catch (Exception e) {
-            LOG.error("update owner", e);
+            log.error("update owner", e);
         }
         return result;
     }

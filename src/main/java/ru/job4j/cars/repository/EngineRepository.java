@@ -1,6 +1,7 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -20,16 +21,16 @@ import java.util.Optional;
  */
 @Repository
 @AllArgsConstructor
+@Slf4j
 public class EngineRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EngineRepository.class.getName());
     private final CrudRepository crudRepository;
 
     public Engine create(Engine engine) {
         try {
             crudRepository.run(session -> session.save(engine));
         } catch (Exception e) {
-            LOG.error("create engine", e);
+            log.error("create engine", e);
         }
         return engine;
     }
@@ -40,7 +41,7 @@ public class EngineRepository {
             crudRepository.run("DELETE Engine WHERE id = :id", Map.of("id", id));
             result = true;
         } catch (Exception e) {
-            LOG.error("done Engine", e);
+            log.error("done Engine", e);
         }
         return result;
     }
@@ -51,7 +52,7 @@ public class EngineRepository {
             crudRepository.run(session -> session.merge(engine));
             result = true;
         } catch (Exception e) {
-            LOG.error("update Engine", e);
+            log.error("update Engine", e);
         }
         return result;
     }

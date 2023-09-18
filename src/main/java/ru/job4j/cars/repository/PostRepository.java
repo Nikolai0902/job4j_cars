@@ -1,6 +1,7 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -20,16 +21,16 @@ import java.util.Optional;
  */
 @Repository
 @AllArgsConstructor
+@Slf4j
 public class PostRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PostRepository.class.getName());
     private final CrudRepository crudRepository;
 
     public Optional<Post> create(Post post) {
         try {
             crudRepository.run(session -> session.save(post));
         } catch (Exception e) {
-            LOG.error("create post", e);
+            log.error("create post", e);
         }
         return Optional.of(post);
     }
@@ -40,7 +41,7 @@ public class PostRepository {
             crudRepository.run("DELETE Post WHERE id = :id", Map.of("id", id));
             result = true;
         } catch (Exception e) {
-            LOG.error("delete post", e);
+            log.error("delete post", e);
         }
         return result;
     }
@@ -51,7 +52,7 @@ public class PostRepository {
             crudRepository.run(session -> session.update(post));
             result = true;
         } catch (Exception e) {
-            LOG.error("update post", e);
+            log.error("update post", e);
         }
         return result;
     }
@@ -62,7 +63,7 @@ public class PostRepository {
             crudRepository.run("UPDATE Post SET sold = :fSold where id = :pId", Map.of("fSold", true, "pId", id));
             result = true;
         } catch (Exception e) {
-            LOG.error("update sold", e);
+            log.error("update sold", e);
         }
         return result;
     }

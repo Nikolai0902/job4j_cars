@@ -1,6 +1,7 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -20,16 +21,16 @@ import java.util.Optional;
  */
 @Repository
 @AllArgsConstructor
+@Slf4j
 public class FileRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FileRepository.class.getName());
     private final CrudRepository crudRepository;
 
     public File create(File file) {
         try {
             crudRepository.run(session -> session.save(file));
         } catch (Exception e) {
-            LOG.error("create car", e);
+            log.error("create car", e);
         }
         return file;
     }
@@ -40,7 +41,7 @@ public class FileRepository {
             crudRepository.run(session -> session.update(file));
             result = true;
         } catch (Exception e) {
-            LOG.error("update file", e);
+            log.error("update file", e);
         }
         return result;
     }
@@ -51,7 +52,7 @@ public class FileRepository {
             crudRepository.run("DELETE File WHERE id = :id", Map.of("id", id));
             result = true;
         } catch (Exception e) {
-            LOG.error("done file", e);
+            log.error("done file", e);
         }
         return result;
     }

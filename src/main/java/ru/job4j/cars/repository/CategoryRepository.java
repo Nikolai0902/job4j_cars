@@ -1,6 +1,7 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -18,16 +19,16 @@ import java.util.Optional;
  */
 @Repository
 @AllArgsConstructor
+@Slf4j
 public class CategoryRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CategoryRepository.class.getName());
     private final CrudRepository crudRepository;
 
     public Optional<Category> create(Category category) {
         try {
             crudRepository.run(session -> session.save(category));
         } catch (Exception e) {
-            LOG.error("create сategory", e);
+            log.error("create сategory", e);
         }
         return Optional.of(category);
     }
@@ -38,7 +39,7 @@ public class CategoryRepository {
             crudRepository.run("DELETE Category WHERE id = :id", Map.of("id", id));
             result = true;
         } catch (Exception e) {
-            LOG.error("done category", e);
+            log.error("done category", e);
         }
         return result;
     }

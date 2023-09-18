@@ -35,11 +35,11 @@
 
                     <div class="d-flex" th:if="${user.login == 'Гость'}">
                         <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
-                        <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
+                        <a class="nav-link text-secondary" th:href="@{/security/login}">Войти</a>
                     </div>
                     <div class="d-flex" th:if="${user.login != 'Гость'}">
                         <a class="nav-link text-secondary me-3" href="#" th:text="${user.login}"></a>
-                        <a class="nav-link text-secondary" th:href="@{/users/logout}">Выйти</a>
+                        <a class="nav-link text-secondary" th:href="@{/security/logout}">Выйти</a>
                     </div>
 
                 </div>
@@ -70,7 +70,7 @@
                      th:src="@{/photo/{id}(id=${post.files[0].id})}"
                      style="max-width: 150px;" alt="No image">
             </td>
-            <td><a th:text="${post.car.name}" th:href="@{/posts/one/{id}(id=${post.id})}"></a></td>
+            <td><a th:text="${post.car.name}" th:href="@{/post/one/{id}(id=${post.id})}"></a></td>
             <td th:text="${post.car.model}"/>
             <td th:text="${post.mileage}"/>
             <td th:text="${post.price}"/>
@@ -79,7 +79,7 @@
         </tr>
         </tbody>
     </table>
-    <a class="btn btn-secondary w-200" th:href="@{/posts/createPost}">Добавить объявление</a>
+    <a class="btn btn-secondary w-200" th:href="@{/post/createPost}">Добавить объявление</a>
 </div>
 </div>
 </body>

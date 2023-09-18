@@ -1,6 +1,7 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -19,16 +20,16 @@ import java.util.Optional;
  */
 @Repository
 @AllArgsConstructor
+@Slf4j
 public class BodyRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BodyRepository.class.getName());
     private final CrudRepository crudRepository;
 
     public Optional<Body> create(Body body) {
         try {
             crudRepository.run(session -> session.save(body));
         } catch (Exception e) {
-            LOG.error("create body", e);
+            log.error("create body", e);
         }
         return Optional.of(body);
     }
@@ -39,7 +40,7 @@ public class BodyRepository {
             crudRepository.run("DELETE Body WHERE id = :id", Map.of("id", id));
             result = true;
         } catch (Exception e) {
-            LOG.error("done body", e);
+            log.error("done body", e);
         }
         return result;
     }
